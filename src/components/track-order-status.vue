@@ -167,44 +167,36 @@
 import {PhoneIcon} from "@heroicons/vue/20/solid";
 import {EnvelopeIcon, ReceiptRefundIcon} from "@heroicons/vue/24/outline";
 import {useTrackingStore} from '../store/tracking';
-import {computed} from "vue";
-import {AppHelper} from "../Helper";
-import {onMounted, ref, watch} from 'vue';
-import {useRoute, useRouter} from 'vue-router';
+import {computed, onMounted, ref} from 'vue';
 
 const isOrderTracked = ref(false);
 const store = useTrackingStore();
-const route = useRoute();
-const router = useRouter();
-const orderNumber = ref('')
-const email = ref('')
-
-watch(() => route.query.id, async (newId: string) => {
-  if (newId) {
-    await store.fetchTrackingDataByID(newId);
-  }
-}, {immediate: true});
+const orderNumber = ref('');
+const email = ref('');
 
 const trackOrder = async () => {
   await store.fetchTrackingData(orderNumber.value, email.value);
   if (store.trackingData.length > 0) {
     isOrderTracked.value = true; // Set to true when data is fetched
-    await router.push({
-      path: '/track',
-      query: {id: store.trackingData[0].trackingDetails.id}
-    });
+    const trackingId = store.trackingData[0].trackingDetails.id;
+    window.location.href = `${window.location.origin}${window.location.pathname}?track=${trackingId}`;
   }
 }
 
+const getQueryParam = (param: any) => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
 onMounted(() => {
-  const trackingId = route.query.id;
+  const trackingId = getQueryParam('track');
   if (trackingId) {
-    store.fetchTrackingDataByID(trackingId.toString());
+    store.fetchTrackingDataByID(trackingId);
   }
 });
 
 const hasQuery = computed(() => {
-  return !!route.query.id;
+  return !!getQueryParam('track');
 });
 
 const trackingData = computed(() => {
@@ -219,6 +211,7 @@ const upsellingProducts = computed(() => {
   return store.trackingData.length > 0 ? store.trackingData[0].upsellingProducts : [];
 })
 </script>
+
 <style scoped>
 
 .dot {

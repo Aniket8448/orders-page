@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import TrackOrderStatus from '../components/track-order-status.vue';
 
 const routes = [
@@ -7,7 +7,7 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes,
 });
 
