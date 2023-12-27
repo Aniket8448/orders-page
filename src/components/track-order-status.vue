@@ -188,21 +188,20 @@ watch(() => route.query.id, async (newId: string) => {
 const trackOrder = async () => {
   await store.fetchTrackingData(orderNumber.value, email.value);
   if (store.trackingData.length > 0) {
-    isOrderTracked.value = true;
-    const trackingId = store.trackingData[0].trackingDetails.id;
-    window.location.href = `${window.location.origin}/#/track/${trackingId}`;
+    isOrderTracked.value = true; // Set to true when data is fetched
+    await router.push({
+      path: '/track',
+      query: {id: store.trackingData[0].trackingDetails.id}
+    });
   }
-};
-
+}
 
 onMounted(() => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const trackingId = urlParams.get('id');
+  const trackingId = route.query.id;
   if (trackingId) {
-    store.fetchTrackingDataByID(trackingId);
+    store.fetchTrackingDataByID(trackingId.toString());
   }
 });
-
 
 const hasQuery = computed(() => {
   return !!route.query.id;
