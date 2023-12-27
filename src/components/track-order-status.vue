@@ -47,14 +47,14 @@
           </div>
           <ul>
             <li class="text-indigo-600 text-4xl border-b border-gray-200 p-10 px-6">{{
-                AppHelper.formatDate(trackingData?.deliveredTime)
+              AppHelper.formatDate(trackingData?.deliveredTime)
               }}
             </li>
             <li class="border-b border-gray-200 p-6 px-6">
               <div class="pb-6">
                 <p>Current Location:</p>
                 <p class="text-gray-600" v-if="trackingData?.transitStatus === 'DELIVERED'"> {{
-                    trackingDetails[0].address
+                  trackingDetails[0].address
                   }},{{ trackingData.shipTo }} </p>
                 <p class="text-gray-600" v-else> {{ trackingData?.shipFrom }} </p>
               </div>
@@ -76,7 +76,7 @@
             <li class="p-6 px-6">
               <div class="flex flex-col gap-6">
                 <div class="flex flex-row  justify-between items-center">
-                  <a class="text-indigo-600" href="tel:9289866165">+91-9289766165</a>
+                  <a class="text-indigo-600" href="tel:contactInfo?.phone">{{contactInfo?.phone}}</a>
                   <a href="#">
                     <PhoneIcon
                         class="h-4 w-4 outline outline-1 outline-gray-300 outline-offset-4 rounded-full text-indigo-600"
@@ -84,7 +84,7 @@
                   </a>
                 </div>
                 <div class="flex flex-row justify-between items-center">
-                  <a class="text-indigo-600" href="mail:help@paysync.com">help@paysync.com</a>
+                  <a class="text-indigo-600" :href=contactInfo?.email>{{contactInfo?.email}}</a>
                   <a href="#">
                     <EnvelopeIcon
                         class="h-4 w-4 outline outline-1 outline-gray-300 outline-offset-4 rounded-full text-indigo-600"
@@ -209,6 +209,10 @@ const trackingDetails = computed(() => {
 
 const upsellingProducts = computed(() => {
   return store.trackingData.length > 0 ? store.trackingData[0].upsellingProducts : [];
+})
+
+const contactInfo = computed(() => {
+  return store.trackingData.length > 0 ? store.trackingData[0].contactInfo : null
 })
 </script>
 
