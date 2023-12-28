@@ -47,14 +47,14 @@
           </div>
           <ul>
             <li class="text-indigo-600 text-4xl border-b border-gray-200 p-10 px-6">{{
-              AppHelper.formatDate(trackingData?.deliveredTime)
+                AppHelper.formatDate(trackingData?.deliveredTime)
               }}
             </li>
             <li class="border-b border-gray-200 p-6 px-6">
               <div class="pb-6">
                 <p>Current Location:</p>
                 <p class="text-gray-600" v-if="trackingData?.transitStatus === 'DELIVERED'"> {{
-                  trackingDetails[0].address
+                    trackingDetails[0].address
                   }},{{ trackingData.shipTo }} </p>
                 <p class="text-gray-600" v-else> {{ trackingData?.shipFrom }} </p>
               </div>
@@ -150,7 +150,7 @@
                       <span class="absolute inset-0"/>
                       {{ product.name }}
                     </h3>
-                    <p class="mt-1 text-sm font-medium text-gray-900">${{ product.price }}</p>
+                    <p class="mt-1 text-sm font-medium text-gray-900">{{contactInfo?.currency}} {{ product.price }}</p>
                   </div>
                 </div>
               </div>
@@ -212,7 +212,7 @@ const upsellingProducts = computed(() => {
 })
 
 const contactInfo = computed(() => {
-  return store.trackingData.length > 0 ? store.trackingData[0].contactInfo : null
+  return store.trackingData.length > 0 ? store.trackingData[0].info : null
 })
 </script>
 
