@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from 'axios';
 import {TrackingState} from "@/Dto";
+
 export const useTrackingStore = defineStore('tracking', {
     state: (): TrackingState => ({
         trackingData: [],
@@ -22,10 +23,8 @@ export const useTrackingStore = defineStore('tracking', {
                 });
                 this.setTrackingData(response.data);
                 return response.data;
-            }catch (error) {
-                if (error.response && error.response.status === 500) {
-                    this.setErrorState(true); // Set error state for HTTP 500 errors
-                }
+            } catch (error) {
+                this.setErrorState(true); // Set error state for any error
             }
         },
         async fetchTrackingDataByID(trackingId: string) {
@@ -37,10 +36,9 @@ export const useTrackingStore = defineStore('tracking', {
                 this.setTrackingData(response.data);
                 return response.data;
             } catch (error) {
-                if (error.response && error.response.status === 500) {
-                    this.setErrorState(true);
-                }
+                this.setErrorState(true); // Set error state for any error
             }
         }
     }
 })
+

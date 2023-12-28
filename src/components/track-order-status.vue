@@ -1,6 +1,5 @@
 <template>
-
-  <section TrackOrder class="m-8 md:m-0" v-if="!hasQuery">
+  <section TrackOrder class="m-8 md:m-0" v-if="!hasQuery && !store.$state.error">
     <div class="max-w-lg mx-auto shadow-md p-8 mb-8 md:w-1/4 w-4/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <h2 class="text-3xl text-center">Track Order</h2>
       <form class="my-8" @submit.prevent="trackOrder">
@@ -31,10 +30,10 @@
     </div>
   </section>
 
-  <div v-if="isOrderTracked || hasQuery" class="mt-16 pt-8">
-    <div v-if="trackingData?.transitStatus === 'NO_RECORD' || trackingData?.transitStatus === 'INIT'"
+  <div class="mt-16 pt-8">
+    <div v-if="trackingData?.transitStatus === 'NO_RECORD' || trackingData?.transitStatus === 'INIT' || store.$state.error"
          class="container max-w-6xl m-auto my-20 px-5 lg:px-0 flex justify-center items-center h-[61vh]">
-      <div class="text-base font-semibold leading-6 text-gray-900" v-if="hasQuery">
+      <div class="text-base font-semibold leading-6 text-gray-900" >
         No Result Found
       </div>
     </div>
@@ -198,6 +197,11 @@ onMounted(() => {
 const hasQuery = computed(() => {
   return !!getQueryParam('track');
 });
+
+const isError = computed(() => {
+  console.log("sroe",store)
+  return store.trackingData.length > 0 ? store.error : false;
+})
 
 const trackingData = computed(() => {
   return store.trackingData.length > 0 ? store.trackingData[0].trackingDetails : null;
