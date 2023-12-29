@@ -189,7 +189,7 @@ const getQueryParam = (param: any) => {
 
 onMounted(() => {
   const params = new URLSearchParams(document.location.search);
-  console.log("params",params)
+  console.log("params",params.get("hash") as string)
   const trackingId = getQueryParam('track');
   if (trackingId) {
     store.fetchTrackingDataByID(trackingId);
