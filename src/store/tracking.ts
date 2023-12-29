@@ -15,10 +15,10 @@ export const useTrackingStore = defineStore('tracking', {
         setErrorState(hasError: boolean) {
             this.error = hasError;
         },
-        async fetchTrackingData(orderId: string, email: string) {
+        async fetchTrackingData(orderId: string, email: string, storeHash: string) {
             try {
                 const response = await axios.get(`https://9082-49-205-177-78.ngrok-free.app/track/order-shipment`, {
-                    params: { orderId, email },
+                    params: { orderId, email, storeHash },
                     headers: { 'ngrok-skip-browser-warning': 'true','X-Frame-Options': 'ALLOW-FROM' }
                 });
                 this.setTrackingData(response.data);
@@ -27,10 +27,10 @@ export const useTrackingStore = defineStore('tracking', {
                 this.setErrorState(true); // Set error state for any error
             }
         },
-        async fetchTrackingDataByID(trackingId: string) {
+        async fetchTrackingDataByID(trackingId: string, storeHash: string) {
             try {
                 const response = await axios.get(`https://9082-49-205-177-78.ngrok-free.app/track/order-shipment-id`, {
-                    params: { trackingId },
+                    params: { trackingId, storeHash },
                     headers: { 'ngrok-skip-browser-warning': 'true' ,'X-Frame-Options': 'ALLOW-FROM'}
                 });
                 this.setTrackingData(response.data);

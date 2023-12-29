@@ -172,9 +172,10 @@ const isOrderTracked = ref(false);
 const store = useTrackingStore();
 const orderNumber = ref('');
 const email = ref('');
+const params = new URLSearchParams(document.location.search);
 
 const trackOrder = async () => {
-  await store.fetchTrackingData(orderNumber.value, email.value);
+  await store.fetchTrackingData(orderNumber.value, email.value,params.get('hash').toString());
   if (store.trackingData.length > 0) {
     isOrderTracked.value = true; // Set to true when data is fetched
     const trackingId = store.trackingData[0].trackingDetails.id;
@@ -188,11 +189,9 @@ const getQueryParam = (param: any) => {
 }
 
 onMounted(() => {
-  const params = new URLSearchParams(document.location.search);
-  console.log("params",params.get("hash") as string)
   const trackingId = getQueryParam('track');
   if (trackingId) {
-    store.fetchTrackingDataByID(trackingId);
+    store.fetchTrackingDataByID(trackingId,params.get('hash').toString());
   }
 });
 
