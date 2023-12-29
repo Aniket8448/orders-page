@@ -17,7 +17,7 @@ export const useTrackingStore = defineStore('tracking', {
         },
         async fetchTrackingData(orderId: string, email: string) {
             try {
-                const response = await axios.get(`https://0721-49-205-177-78.ngrok-free.app/track/order-shipment`, {
+                const response = await axios.get(`https://9082-49-205-177-78.ngrok-free.app/track/order-shipment`, {
                     params: { orderId, email },
                     headers: { 'ngrok-skip-browser-warning': 'true','X-Frame-Options': 'ALLOW-FROM' }
                 });
@@ -29,7 +29,7 @@ export const useTrackingStore = defineStore('tracking', {
         },
         async fetchTrackingDataByID(trackingId: string) {
             try {
-                const response = await axios.get(`https://0721-49-205-177-78.ngrok-free.app/track/order-shipment-id`, {
+                const response = await axios.get(`https://9082-49-205-177-78.ngrok-free.app/track/order-shipment-id`, {
                     params: { trackingId },
                     headers: { 'ngrok-skip-browser-warning': 'true' ,'X-Frame-Options': 'ALLOW-FROM'}
                 });
