@@ -198,11 +198,6 @@ const hasQuery = computed(() => {
   return !!getQueryParam('track');
 });
 
-const isError = computed(() => {
-  console.log("sroe",store)
-  return store.trackingData.length > 0 ? store.error : false;
-})
-
 const trackingData = computed(() => {
   return store.trackingData.length > 0 ? store.trackingData[0].trackingDetails : null;
 });
