@@ -51,15 +51,15 @@
             </li>
             <li class="border-b border-gray-200 p-6 px-6">
               <div class="pb-6">
-                <p>Current Location:</p>
-                <p class="text-gray-600" v-if="trackingData?.transitStatus === 'DELIVERED'"> {{
+                <span>Current Location: </span>
+                <span class="text-gray-600" v-if="trackingData?.transitStatus === 'DELIVERED'"> {{
                     trackingDetails[0].address
-                  }},{{ trackingData.shipTo }} </p>
-                <p class="text-gray-600" v-else> {{ trackingData?.shipFrom }} </p>
+                  }},{{ trackingData?.shipTo }} </span>
+                <span class="text-gray-600" v-else> {{ trackingData?.shipFrom ?? trackingDetails[0]?.address }} </span>
               </div>
               <div>
-                <p>Destination:</p>
-                <p class="text-gray-600">{{ trackingData?.shipTo }}</p>
+                <span>Destination: </span>
+                <span class="text-gray-600">{{ trackingData?.shipTo }}</span>
               </div>
             </li>
             <li class="border-b border-gray-200 p-6 px-6">
@@ -114,15 +114,15 @@
               <div v-for="(detail, index) in trackingDetails" :key="index"
                    class="pb-6 relative leading-7 flex gap-4 border-b border-gray-200 p-6 px-6 max-h-[80vh] overflow-auto">
                 <div :class="[
-              'dot mt-[10px]',
-              trackingData.lastTrackingTime.value === detail.eventTime ? 'outline outline-4 outline-indigo-200 bg-indigo-600' :
-              detail.transitSubStatus === 'DELIVERED_01' ? 'outline outline-4 outline-green-200 bg-green-600' :
-              'bg-gray-400'
-            ]"></div>
-                <div>
-                  <p class="font-medium">{{ detail.eventTime }}</p>
-                  <p class="text-gray-600 font-light text-sm">{{ detail.eventDetail }}</p>
-                  <p class="text-gray-600 font-light text-sm">{{ detail.address }}</p>
+          'dot mt-[10px]',
+          isDelivered ? 'outline outline-4 outline-green-200 bg-green-600' :
+          (trackingData.lastTrackingTime.value === detail.eventTime || detail.eventDetail === 'In-Transit') ? 'outline outline-4 outline-indigo-200 bg-indigo-600' :
+          'bg-gray-400'
+        ]"></div>
+              <div>
+                  <p class="font-medium">{{ detail?.eventTime }}</p>
+                  <p class="text-gray-600 font-light text-sm">{{ detail?.eventDetail }}</p>
+                  <p class="text-gray-600 font-light text-sm">{{ detail?.address }}</p>
                 </div>
               </div>
             </div>
@@ -205,6 +205,10 @@ const trackingData = computed(() => {
 
 const trackingDetails = computed(() => {
   return trackingData.value ? trackingData.value.localLogisticsInfo.trackingDetails : [];
+})
+
+const isDelivered = computed(() => {
+  return store.trackingData[0].trackingDetails.transitStatus === 'DELIVERED';
 })
 
 const upsellingProducts = computed(() => {
