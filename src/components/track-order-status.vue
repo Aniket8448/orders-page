@@ -157,7 +157,15 @@
           </ul>
         </div>
       </div>
-      <div class="text-sm text-gray-600 mt-4">Powered By TRACK!@# <img class="ml-2 h-6 inline"/></div>
+      <div class="text-sm text-gray-600 mt-4">
+        <a
+        >Powered By
+          <img
+              src="../assets/full-logo-track-order.png"
+              alt="logo"
+              class="ml-2 h-6 inline"
+          /></a>
+      </div>
     </div>
   </div>
 </template>
