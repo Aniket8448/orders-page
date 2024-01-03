@@ -114,12 +114,13 @@
               <div v-for="(detail, index) in trackingDetails" :key="index"
                    class="pb-6 relative leading-7 flex gap-4 border-b border-gray-200 p-6 px-6 max-h-[80vh] overflow-auto">
                 <div :class="[
-          'dot mt-[10px]',
-          isDelivered ? 'outline outline-4 outline-green-200 bg-green-600' :
-          (trackingData.lastTrackingTime.value === detail.eventTime || detail.eventDetail === 'In-Transit') ? 'outline outline-4 outline-indigo-200 bg-indigo-600' :
-          'bg-gray-400'
-        ]"></div>
-              <div>
+        'dot mt-[10px]',
+        isDelivered ? 'outline outline-4 outline-green-200 bg-green-600' :
+        (trackingData?.lastTrackingTime === detail.eventTime) ? 'outline outline-4 outline-indigo-200 bg-indigo-600' :
+        'bg-gray-400'
+      ]"></div>
+
+                <div>
                   <p class="font-medium">{{ detail?.eventTime }}</p>
                   <p class="text-gray-600 font-light text-sm">{{ detail?.eventDetail }}</p>
                   <p class="text-gray-600 font-light text-sm">{{ detail?.address }}</p>
