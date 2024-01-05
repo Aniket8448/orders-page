@@ -75,7 +75,7 @@
             <li class="p-6 px-6">
               <div class="flex flex-col gap-6">
                 <div class="flex flex-row  justify-between items-center">
-                  <a class="text-indigo-600" href="tel:contactInfo?.phone">{{contactInfo?.phone}}</a>
+                  <a class="text-indigo-600" :href="'tel:' + contactInfo?.phone">{{contactInfo?.phone}}</a>
                   <a href="#">
                     <PhoneIcon
                         class="h-4 w-4 outline outline-1 outline-gray-300 outline-offset-4 rounded-full text-indigo-600"
@@ -83,7 +83,7 @@
                   </a>
                 </div>
                 <div class="flex flex-row justify-between items-center">
-                  <a class="text-indigo-600" :href=contactInfo?.email>{{contactInfo?.email}}</a>
+                  <a class="text-indigo-600" :href="'mailto:' + contactInfo?.email">{{contactInfo?.email}}</a>
                   <a href="#">
                     <EnvelopeIcon
                         class="h-4 w-4 outline outline-1 outline-gray-300 outline-offset-4 rounded-full text-indigo-600"
@@ -91,7 +91,7 @@
                   </a>
                 </div>
                 <div class="flex flex-row justify-between items-center">
-                  <a class="text-indigo-600" href="#">Return Policy</a>
+                  <a class="text-indigo-600" :href=contactInfo?.policy target="_blank">Return Policy</a>
                   <a href="#">
                     <ReceiptRefundIcon
                         class="h-4 w-4 outline outline-1 outline-gray-300 outline-offset-4 rounded-full text-indigo-600"
@@ -184,7 +184,7 @@ const email = ref('');
 const params = new URLSearchParams(document.location.search);
 
 const trackOrder = async () => {
-  await store.fetchTrackingData(orderNumber.value, email.value,params.get('hash'));
+  await store.fetchTrackingData(orderNumber.value, email.value,params.get('hash') ?? '6pkpnzjnue');
   if (store.trackingData.length > 0) {
     isOrderTracked.value = true; // Set to true when data is fetched
     const trackingId = store.trackingData[0].trackingDetails.id;
@@ -200,7 +200,7 @@ const getQueryParam = (param: any) => {
 onMounted(() => {
   const trackingId = getQueryParam('track');
   if (trackingId) {
-    store.fetchTrackingDataByID(trackingId,params.get('hash'));
+    store.fetchTrackingDataByID(trackingId,params.get('hash') ?? "6pkpnzjnue");
   }
 });
 
