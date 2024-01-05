@@ -6,7 +6,8 @@ export const useTrackingStore = defineStore('tracking', {
     state: (): TrackingState => ({
         trackingData: [],
         error: false,
-        wrongCreds: false
+        wrongCreds: false,
+        loading: false
     }),
     actions: {
         setTrackingData(data: any) {
@@ -17,6 +18,7 @@ export const useTrackingStore = defineStore('tracking', {
             this.error = hasError;
         },
         async fetchTrackingData(orderId: string, email: string, storeHash: string) {
+            this.loading = true;
             try {
                 const response = await axios.get(`https://e503-49-205-177-78.ngrok-free.app/track/order-shipment`, {
                     params: { orderId, email, storeHash },
@@ -30,9 +32,12 @@ export const useTrackingStore = defineStore('tracking', {
                 } else {
                     this.setErrorState(true); // Set error state for other types of errors
                 }
+            } finally {
+                this.loading = false;
             }
         },
         async fetchTrackingDataByID(trackingId: string, storeHash: string) {
+            this.loading = true;
             try {
                 const response = await axios.get(`https://e503-49-205-177-78.ngrok-free.app/track/order-shipment-id`, {
                     params: { trackingId, storeHash },
@@ -46,6 +51,8 @@ export const useTrackingStore = defineStore('tracking', {
                 } else {
                     this.setErrorState(true); // Set error state for other types of errors
                 }
+            } finally {
+                this.loading = false;
             }
         }
     }

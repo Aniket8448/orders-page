@@ -34,11 +34,11 @@
   <div class="mt-16 pt-8">
     <div v-if="trackingData?.transitStatus === 'NO_RECORD' || trackingData?.transitStatus === 'INIT' || store.$state.error"
          class="container max-w-6xl m-auto my-20 px-5 lg:px-0 flex justify-center items-center h-[61vh]">
-      <div class="text-base font-semibold leading-6 text-gray-900" >
-        No Result Found
+      <div class="text-center text-red-500">
+        Tracking Details Not Found
       </div>
     </div>
-    <div class="container max-w-6xl m-auto my-20 px-5 lg:px-0" v-if="trackingDetails && hasQuery">
+    <div class="container max-w-6xl m-auto my-20 px-5 lg:px-0" v-if="trackingDetails?.length > 0 && hasQuery">
       <div class="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 lg:gap-y-0">
         <!-- Grid One  -->
         <div class="overflow-hidden bg-white rounded-lg shadow">
@@ -169,6 +169,12 @@
           /></a>
       </div>
     </div>
+
+    <div v-if="store.loading && hasQuery" class="container max-w-6xl m-auto my-20 px-5 lg:px-0 flex justify-center items-center h-[61vh]">
+      <div class="text-center">
+        <p class="text-base font-semibold leading-6 text-gray-900">Loading...</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -185,7 +191,7 @@ const email = ref('');
 const params = new URLSearchParams(document.location.search);
 
 const trackOrder = async () => {
-  await store.fetchTrackingData(orderNumber.value, email.value,params.get('hash') ?? '6pkpnzjnue');
+  await store.fetchTrackingData(orderNumber.value, email.value,params.get('hash') ?? 'g4h2nmsxpo');
   if (store.trackingData.length > 0) {
     isOrderTracked.value = true; // Set to true when data is fetched
     const trackingId = store.trackingData[0].trackingDetails.id;
@@ -201,7 +207,7 @@ const getQueryParam = (param: any) => {
 onMounted(() => {
   const trackingId = getQueryParam('track');
   if (trackingId) {
-    store.fetchTrackingDataByID(trackingId,params.get('hash') ?? "6pkpnzjnue");
+    store.fetchTrackingDataByID(trackingId,params.get('hash') ?? "g4h2nmsxpo");
   }
 });
 
