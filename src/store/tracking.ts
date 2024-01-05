@@ -6,6 +6,7 @@ export const useTrackingStore = defineStore('tracking', {
     state: (): TrackingState => ({
         trackingData: [],
         error: false,
+        wrongCreds: false
     }),
     actions: {
         setTrackingData(data: any) {
@@ -24,7 +25,11 @@ export const useTrackingStore = defineStore('tracking', {
                 this.setTrackingData(response.data);
                 return response.data;
             } catch (error) {
-                this.setErrorState(true); // Set error state for any error
+                if (axios.isAxiosError(error) && error.response && error.response.status === 403) {
+                    this.wrongCreds = true; // Set wrongCreds to true if the status code is 403
+                } else {
+                    this.setErrorState(true); // Set error state for other types of errors
+                }
             }
         },
         async fetchTrackingDataByID(trackingId: string, storeHash: string) {
@@ -36,7 +41,11 @@ export const useTrackingStore = defineStore('tracking', {
                 this.setTrackingData(response.data);
                 return response.data;
             } catch (error) {
-                this.setErrorState(true); // Set error state for any error
+                if (axios.isAxiosError(error) && error.response && error.response.status === 403) {
+                    this.wrongCreds = true; // Set wrongCreds to true if the status code is 403
+                } else {
+                    this.setErrorState(true); // Set error state for other types of errors
+                }
             }
         }
     }

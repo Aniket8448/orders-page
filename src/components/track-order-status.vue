@@ -12,7 +12,7 @@
                 id="ordernumber"
                 class="p-4 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 placeholder="343453432"
-                v-model="orderNumber"/>
+                v-model="orderNumber" required/>
           </div>
         </div>
         <div class="mt-4">
@@ -20,13 +20,14 @@
           <div class="mt-2">
             <input type="email" name="email" id="email"
                    class="p-4 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                   placeholder="you@example.com" v-model="email"/>
+                   placeholder="you@example.com" v-model="email" required/>
           </div>
         </div>
         <input type="submit"
                class="cursor-pointer mt-8 rounded-md bg-indigo-600 px-3.5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                value="Track Order"/>
       </form>
+      <p v-if="store.wrongCreds" class="text-center text-red-500">Invalid details provided.</p>
     </div>
   </section>
 
