@@ -205,6 +205,7 @@ const getQueryParam = (param: any) => {
 }
 
 onMounted(() => {
+  console.log("hello")
   const trackingId = getQueryParam('track');
   if (trackingId) {
     store.fetchTrackingDataByID(trackingId,params.get('hash'));
