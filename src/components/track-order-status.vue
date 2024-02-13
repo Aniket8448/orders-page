@@ -191,6 +191,8 @@ const email = ref('');
 const params = new URLSearchParams(document.location.search);
 
 const trackOrder = async () => {
+  console.log("params",params)
+  console.log("store hash",params.get('hash'))
   await store.fetchTrackingData(orderNumber.value, email.value,params.get('hash'));
   if (store.trackingData.length > 0) {
     isOrderTracked.value = true; // Set to true when data is fetched
