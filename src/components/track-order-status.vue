@@ -1,5 +1,5 @@
 <template>
-  <section TrackOrder class="m-8 md:m-0" v-if="!hasQuery && !store.$state.error">
+  <section class="m-8 md:m-0" v-if="!hasQuery && !store.$state.error">
     <div class="max-w-lg mx-auto shadow-md p-8 mb-8 md:w-1/4 w-4/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <h2 class="text-3xl text-center">Track Order</h2>
       <form class="my-8" @submit.prevent="trackOrder">
@@ -15,12 +15,12 @@
                 v-model="orderNumber" required/>
           </div>
         </div>
-        <div class="mt-4">
+        <div class="mt-4" v-if="emailValidationStatus">
           <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
           <div class="mt-2">
             <input type="email" name="email" id="email"
                    class="p-4 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                   placeholder="you@example.com" v-model="email" required/>
+                   placeholder="you@example.com" v-model="email"/>
           </div>
         </div>
         <input type="submit"
@@ -189,10 +189,9 @@ const store = useTrackingStore();
 const orderNumber = ref('');
 const email = ref('');
 const params = new URLSearchParams(document.location.search);
+const emailValidationStatus = ref<boolean>(false);
 
 const trackOrder = async () => {
-  console.log("params",params)
-  console.log("store hash",params.get('hash'))
   await store.fetchTrackingData(orderNumber.value, email.value,params.get('hash'));
   if (store.trackingData.length > 0) {
     isOrderTracked.value = true; // Set to true when data is fetched
@@ -206,8 +205,9 @@ const getQueryParam = (param: any) => {
   return urlParams.get(param);
 }
 
-onMounted(() => {
-  console.log("hello")
+onMounted(async () => {
+  const emailStatus: {emailValidationStatus: boolean} = await store.fetchEmailValidationStatus(params.get('hash'));
+  emailValidationStatus.value = emailStatus.emailValidationStatus;
   const trackingId = getQueryParam('track');
   if (trackingId) {
     store.fetchTrackingDataByID(trackingId,params.get('hash'));

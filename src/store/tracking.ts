@@ -20,8 +20,9 @@ export const useTrackingStore = defineStore('tracking', {
         async fetchTrackingData(orderId: string, email: string, storeHash: string) {
             this.loading = true;
             try {
-                const response = await axios.get(`https://api.bc.trackorder.app/track/order-shipment`, {
-                    params: { orderId, email, storeHash }
+                const response = await axios.get(`https://3dcd-103-113-65-220.ngrok-free.app/track/order-shipment`, {
+                    params: { orderId, email, storeHash },
+                    headers: { 'ngrok-skip-browser-warning': 'true','X-Frame-Options': 'ALLOW-FROM' }
                 });
                 this.setTrackingData(response.data);
                 return response.data;
@@ -38,8 +39,9 @@ export const useTrackingStore = defineStore('tracking', {
         async fetchTrackingDataByID(trackingId: string, storeHash: string) {
             this.loading = true;
             try {
-                const response = await axios.get(`https://api.bc.trackorder.app/track/order-shipment-id`, {
+                const response = await axios.get(`https://3dcd-103-113-65-220.ngrok-free.app/track/order-shipment-id`, {
                     params: { trackingId, storeHash },
+                    headers: { 'ngrok-skip-browser-warning': 'true','X-Frame-Options': 'ALLOW-FROM' }
                 });
                 this.setTrackingData(response.data);
                 return response.data;
@@ -52,7 +54,22 @@ export const useTrackingStore = defineStore('tracking', {
             } finally {
                 this.loading = false;
             }
+        },
+        async fetchEmailValidationStatus(storeHash: string) {
+            this.loading = true;
+            try {
+                const response = await axios.get(`https://3dcd-103-113-65-220.ngrok-free.app/track/email-validation-status`, {
+                    params: { storeHash },
+                    headers: { 'ngrok-skip-browser-warning': 'true','X-Frame-Options': 'ALLOW-FROM' }
+                });
+                return response.data;
+            } catch (error) {
+                this.setErrorState(true);
+            } finally {
+                this.loading = false;
+            }
         }
+
     }
 })
 

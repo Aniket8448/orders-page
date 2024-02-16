@@ -16,3 +16,10 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+
+#To Test Order-status-page using ngrok url or local url:
+In axios.get() in UI folder, write axios request as follows:
+axios.get(`http://127.0.0.1:3000/track/email-validation-status`, {
+params: { storeHash },
+headers: { 'ngrok-skip-browser-warning': 'true','X-Frame-Options': 'ALLOW-FROM' }
+});
