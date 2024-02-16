@@ -210,7 +210,7 @@ onMounted(async () => {
   emailValidationStatus.value = emailStatus.emailValidationStatus;
   const trackingId = getQueryParam('track');
   if (trackingId) {
-    store.fetchTrackingDataByID(trackingId,params.get('hash'));
+    await store.fetchTrackingDataByID(trackingId,params.get('hash'));
   }
 });
 
