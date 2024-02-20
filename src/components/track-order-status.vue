@@ -1,51 +1,205 @@
 <template>
-  <section class="m-8 md:m-0" v-if="!hasQuery && !store.$state.error">
-    <div class="max-w-lg mx-auto shadow-md p-8 mb-8 md:w-1/4 w-4/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-      <h2 class="text-3xl text-center">Track Order</h2>
-      <form class="my-8" @submit.prevent="trackOrder">
-        <div>
-          <label for="ordernumber" class="block text-sm font-medium leading-6 text-gray-900">Order No.</label>
-          <div class="mt-2">
-            <input
-                type="text"
-                name="ordernumber"
-                id="ordernumber"
-                class="p-4 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="343453432"
-                v-model="orderNumber"
-                required />
-          </div>
+  <div
+      v-if="isLoading"
+      class="container max-w-6xl m-auto px-5 lg:px-0">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 lg:gap-y-0">
+      <!-- Grid One  -->
+      <div class="overflow-hidden bg-white rounded-lg shadow">
+        <div class="border-b border-gray-200 bg-white px-4 py-5 px-6">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">Estimated Delivery</h3>
         </div>
-        <div class="mt-4" v-if="emailValidationStatus">
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
-          <div class="mt-2">
-            <input
-                type="email"
-                name="email"
-                id="email"
-                class="p-4 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="you@example.com"
-                v-model="email"
-                required />
-          </div>
+        <ul>
+          <li class="text-indigo-600 text-4xl border-b border-gray-200 p-10 px-6">
+            <AppSkeleton></AppSkeleton>
+          </li>
+          <li class="border-b border-gray-200 p-6 px-6">
+            <div class="pb-6">
+              <p>Current Location</p>
+              <AppSkeleton class="mt-2"></AppSkeleton>
+            </div>
+            <div>
+              <p>Destination</p>
+              <AppSkeleton class="mt-2"></AppSkeleton>
+            </div>
+          </li>
+          <li class="border-b border-gray-200 p-6 px-6">
+            <div>
+              <p>Tracking Number</p>
+              <p class="text-indigo-600">
+                <AppSkeleton class="mt-2"></AppSkeleton>
+              </p>
+            </div>
+          </li>
+          <li class="p-6 px-6">
+            <div class="flex flex-col gap-6">
+              <div class="flex flex-row justify-between items-center">
+                <AppSkeleton></AppSkeleton>
+                <a href="#">
+                  <PhoneIcon
+                      class="h-4 w-4 outline outline-1 outline-gray-300 outline-offset-4 rounded-full text-indigo-600"
+                      aria-hidden="true" />
+                </a>
+              </div>
+              <div class="flex flex-row justify-between items-center">
+                <AppSkeleton></AppSkeleton>
+                <a href="#">
+                  <EnvelopeIcon
+                      class="h-4 w-4 outline outline-1 outline-gray-300 outline-offset-4 rounded-full text-indigo-600"
+                      aria-hidden="true" />
+                </a>
+              </div>
+              <div class="flex flex-row justify-between items-center">
+                <AppSkeleton></AppSkeleton>
+                <a href="#">
+                  <ReceiptRefundIcon
+                      class="h-4 w-4 outline outline-1 outline-gray-300 outline-offset-4 rounded-full text-indigo-600"
+                      aria-hidden="true" />
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- Grid Two  -->
+      <div class="overflow-hidden bg-white rounded-lg shadow">
+        <div class="border-b border-gray-200 bg-white px-4 py-5 px-6">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">Shipment Progress</h3>
         </div>
-        <input
-            type="submit"
-            class="cursor-pointer mt-8 rounded-md bg-indigo-600 px-3.5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            value="Track Order" />
-      </form>
-      <p v-if="store.wrongCreds" class="text-center text-red-500">Invalid details provided.</p>
-    </div>
-  </section>
 
-  <div class="mt-16 pt-8">
+        <div
+            class="px-6 mt-6"
+            v-for="i in 3"
+            :key="i">
+          <AppSkeleton class="h-8"></AppSkeleton>
+        </div>
+      </div>
+      <!-- Grid Three  -->
+      <div class="overflow-hidden bg-white rounded-lg shadow">
+        <div class="border-b border-gray-200 bg-white px-4 py-5 px-6">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 text-uppercase">
+            Recommended
+          </h3>
+        </div>
+        <ul>
+          <li>
+            <div
+                class="px-6 mt-6"
+                v-for="i in 3"
+                :key="i">
+              <AppSkeleton class="h-8"></AppSkeleton>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="text-sm text-gray-600 mt-4">
+      <a :href="``"
+      >Powered by
+        <img
+            src="/img/full-logo-track-order.png"
+            alt="logo"
+            class="ml-2 h-6 inline"
+        /></a>
+    </div>
+  </div>
+
+  <div class="mt-16 pt-8" v-else>
     <div v-if="trackingData?.transitStatus === 'NO_RECORD' || trackingData?.transitStatus === 'INIT' || store.$state.error"
          class="container max-w-6xl m-auto my-20 px-5 lg:px-0 flex justify-center items-center h-[61vh]">
       <div class="text-center text-red-500">
         Tracking Details Not Found
       </div>
     </div>
-    <div class="container max-w-6xl m-auto my-20 px-5 lg:px-0" v-if="trackingDetails?.length > 0 && hasQuery">
+
+    <div
+        class="container max-w-6xl m-auto" v-if="!selectedFulfillment">
+      <div class="bg-white px-6 py-6 shadow sm:rounded-lg sm:px-6 mb-4">
+        <div
+            v-for="fulfillment in fulfillments as ITrackingData[]"
+            :key="fulfillment?.trackingDetails?.id"
+            class="border-b last:border-none py-2 last:pb-0 first:pt-0">
+          <div class="grid grid-cols-12">
+            <div class="col-span-2">
+              <div
+                  class="mx-2"
+                  v-if="isImageLoading">
+                <div class="bg-gray-200 animate-pulse h-[100px] my-auto"></div>
+              </div>
+              <div v-else>
+                <img
+                    :src="fulfillment.bannerImgUrl"
+                    alt="fulfillment image"
+                    class="h-[100px]" />
+              </div>
+            </div>
+            <div class="col-span-3">
+              <AppBadge :variant="fulfillment?.trackingDetails?.transitStatus === 'DELIVERED' ? 'success' : 'warning'">
+                <p class="">
+                  {{
+                    fulfillment?.trackingDetails?.transitStatus === "NO_RECORD"
+                        ? "NOT AVAILABLE"
+                        : fulfillment?.trackingDetails?.transitStatus === "DELIVERED"
+                            ? "DELIVERED"
+                            : fulfillment?.trackingDetails?.transitStatus
+                  }}
+                </p>
+              </AppBadge>
+
+              <p class="text-indigo-600 text-2xl border-gray-200">
+                {{
+                  fulfillment?.trackingDetails?.deliveredTime
+                      ? AppHelper.formatDate(new Date(fulfillment?.trackingDetails?.deliveredTime).toISOString())
+                      : fulfillment?.trackingDetails?.expectedDelivery
+                          ? AppHelper.formatDate(new Date(fulfillment?.trackingDetails?.expectedDelivery).toISOString())
+                          : "NOETA"
+                }}
+              </p>
+              <p class="text-sm">{{ fulfillment?.trackingDetails?.courierName }}&nbsp; #{{ fulfillment?.trackingDetails?.trackNo }}</p>
+            </div>
+            <div class="col-span-5">
+              <p class="text-xs text-gray-700 pt-1 mb-1">Delivering to</p>
+              <p class="text-sm">
+                {{
+                  fulfillment.shippingAddress?.first_name && fulfillment.shippingAddress?.last_name
+                      ? `${fulfillment.shippingAddress?.first_name} ${fulfillment.shippingAddress?.last_name}`
+                      : ""
+                }}
+              </p>
+              <p class="text-sm">
+                {{ fulfillment.shippingAddress?.city ? `\n${fulfillment.shippingAddress.city},` : "" }}
+                {{ fulfillment.shippingAddress?.country ? `\n${fulfillment.shippingAddress.country}` : "" }}
+              </p>
+            </div>
+            <div class="col-span-2 flex">
+              <div class="my-auto">
+                <button
+                    @click="selectFulfillment(fulfillment)"
+                    class="cursor-pointer mx-auto rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  Track
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container max-w-6xl m-auto my-20 px-5 lg:px-0" v-if="selectedFulfillment">
+      <div
+          @click="selectedFulfillment = null"
+          v-if="fulfillments?.length > 1"
+          class="inline-block my-auto hover:cursor-pointer text-indigo-600 mb-4">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="16"
+            width="16"
+            class="fill-indigo-600 my-auto mr-2 inline"
+            viewBox="0 0 512 512">
+          <path
+              d="M7 239c-9.4 9.4-9.4 24.6 0 33.9L143 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-95-95L488 280c13.3 0 24-10.7 24-24s-10.7-24-24-24L81.9 232l95-95c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L7 239z" />
+        </svg>
+        <p class="inline">Back</p>
+      </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 lg:gap-y-0">
         <!-- Grid One -->
         <div class="overflow-hidden bg-white rounded-lg shadow">
@@ -182,49 +336,101 @@
 import {PhoneIcon} from "@heroicons/vue/20/solid";
 import {EnvelopeIcon, ReceiptRefundIcon} from "@heroicons/vue/24/outline";
 import {useTrackingStore} from '../store/tracking';
-import {computed, onMounted, ref} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {AppHelper} from '../Helper';
+import {ITrackingData} from "@/Dto";
 const isOrderTracked = ref(false);
 const store = useTrackingStore();
 const orderNumber = ref('');
+const isImageLoading = ref(true);
+const trackingFulfilmentData = ref (null);
+
 const email = ref('');
 const params = new URLSearchParams(document.location.search);
 const emailValidationStatus = ref<boolean>(false);
+const selectedFulfillment = ref(null);
+// let trackingData = ref(null);
 
-const trackOrder = async () => {
-  await store.fetchTrackingData(orderNumber.value, email.value,params.get('hash'));
-  if (store.trackingData.length > 0) {
-    isOrderTracked.value = true; // Set to true when data is fetched
-    const trackingId = store.trackingData[0].trackingDetails.id;
-    window.location.href = `${window.location.origin}${window.location.pathname}?track=${trackingId}`;
-  }
-}
+const props = withDefaults(
+    defineProps<{
+      fulfillments: any;
+      storeHash: string;
+      isLoading: boolean;
+    }>(),
+    {
+      fulfillments: [],
+      storeHash: "",
+      isLoading: false,
+    }
+);
 
 const getQueryParam = (param: any) => {
   const urlParams = new URLSearchParams(window.location.search);
+  console.log("Params",urlParams.get(param));
   return urlParams.get(param);
 }
 
 onMounted(async () => {
-  const emailStatus: {emailValidationStatus: boolean} = await store.fetchEmailValidationStatus(params.get('hash'));
-  emailValidationStatus.value = emailStatus.emailValidationStatus;
-  const trackingId = getQueryParam('track');
-  if (trackingId) {
-    await store.fetchTrackingDataByID(trackingId,params.get('hash'));
-  }
+  console.log("Selected-fulfilment", selectedFulfillment.value);
 });
+
+
+const fetchImageUrls = async () => {
+  isImageLoading.value = true;
+
+  const productIds: string[] = store?.trackingData
+      .filter(f => f.items && f.items.length > 0)
+      .map(f => f.items[0].product_id);
+
+  try {
+    const res = await store.fetchImagesByProductIds(params.get('hash') ?? 'a1ty1hczd3', productIds.join(','));
+    console.log("Image-urls-response", res);
+
+    store.trackingData.forEach(fulfillment => {
+      const firstProductId = fulfillment.items[0].product_id;
+      console.log("Product-id", firstProductId);
+      const productImage = (res.filter(x => x.id ==firstProductId))[0]?.imageUrl;
+      if (productImage) {
+        fulfillment.bannerImgUrl = productImage;
+      }
+    });
+  } catch (e) {
+  } finally {
+    isImageLoading.value = false;
+  }
+};
 
 const hasQuery = computed(() => {
-  return !!getQueryParam('track');
+  return !!getQueryParam('orderId');
 });
 
-const trackingData = computed(() => {
-  return store.trackingData.length > 0 ? store.trackingData[0].trackingDetails : null;
+
+watch(
+    [() => props.isLoading, () => props.fulfillments],
+    ([isLoading, fulfillments]) => {
+      if (!isLoading && fulfillments.length > 0) {
+        if (fulfillments.length === 1) {
+          selectedFulfillment.value = fulfillments[0].trackingDetails;
+        }
+        fetchImageUrls();
+      }
+    },
+    { immediate: true }
+);
+
+let trackingData = computed(() => {
+  return selectedFulfillment.value;
 });
 
-const trackingDetails = computed(() => {
-  return trackingData.value ? trackingData.value.localLogisticsInfo.trackingDetails : [];
+let trackingDetails = computed(() => {
+  console.log("selected-fulfilment", selectedFulfillment.value);
+  return selectedFulfillment.value ? selectedFulfillment.value.localLogisticsInfo.trackingDetails : [];
 })
+
+const selectFulfillment = (fulfilment) => {
+  console.log("Fulfilment", fulfilment);
+  selectedFulfillment.value = fulfilment?.trackingDetails;
+}
 
 const isDelivered = computed(() => {
   return store.trackingData[0].trackingDetails.transitStatus === 'DELIVERED';
