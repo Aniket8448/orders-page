@@ -73,11 +73,11 @@ onMounted(async () => {
 
   
   customCss.value = document.location.search.split('&customCss=')[1];
-  console.log("Decoded URI", JSON.parse(decodeURIComponent(customCss.value)));
+  console.log("Decoded URI", JSON.parse(decodeURIComponent(customCss.value)).customCss);
   if (customCss.value) {
     const styleEl = document.createElement('style');
     styleEl.type = 'text/css';
-    styleEl.appendChild(document.createTextNode(decodeURIComponent(customCss.value)));
+    styleEl.appendChild(document.createTextNode(JSON.parse(decodeURIComponent(customCss.value)).customCss));
     document.head.appendChild(styleEl);
   }
 
