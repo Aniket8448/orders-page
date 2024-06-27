@@ -68,6 +68,15 @@ const emailValidationStatus = ref(true);
 onMounted(async () => {
   const params = new URLSearchParams(document.location.search);
 
+  const queryParams = {};
+
+    // Iterate over all parameters and store them in an object
+    for (const [key, value] of params.entries()) {
+        queryParams[key] = value;
+    }
+
+  console.log("query params", queryParams)
+
   id.value = params.get("id") as string;
   storeHash.value = params.get("hash") as string;
 
