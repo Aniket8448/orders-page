@@ -68,25 +68,12 @@ const emailValidationStatus = ref(true);
 onMounted(async () => {
   const params = new URLSearchParams(document.location.search);
 
-  const queryParams = {};
-
-    // Iterate over all parameters and store them in an object
-    for (const [key, value] of params.entries()) {
-        queryParams[key] = value;
-    }
-
-  console.log("query params", queryParams)
-
   id.value = params.get("id") as string;
   storeHash.value = params.get("hash") as string;
 
-  // Decode the customCss parameter to handle any special characters
-  const encodedCustomCss = urlParams.get('customCss');
-  const customCssDecoded = decodeURIComponent(encodedCustomCss);
-  console.log(`Value 1 ${encodedCustomCss} and value 2 is ${customCssDecoded}`);
-  customCss.value = customCssRaw ? decodeURIComponent(customCssRaw) : "";
-  console.log("custom css value",customCss.value)
-  console.log("params",params)
+  console.log(document.location.search.split('&customCss=')[1]);
+
+  customCss.value = document.location.search.split('&customCss=')[1];
   if (customCss.value) {
     const styleEl = document.createElement('style');
     styleEl.type = 'text/css';
