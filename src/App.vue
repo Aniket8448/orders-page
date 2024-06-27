@@ -77,7 +77,7 @@ onMounted(async () => {
   if (customCss.value) {
     const styleEl = document.createElement('style');
     styleEl.type = 'text/css';
-    styleEl.appendChild(document.createTextNode(customCss.value));
+    styleEl.appendChild(document.createTextNode(decodeURIComponent(customCss.value)));
     document.head.appendChild(styleEl);
   }
 
