@@ -71,7 +71,7 @@ onMounted(async () => {
   id.value = params.get("id") as string;
   storeHash.value = (params.get("hash")) as string;
 
-  customCss.value = params.get("customCss") as string;
+  customCss.value = decodeURIComponent(params.get("customCss") as string);
 
   if (customCss.value) {
     const styleEl = document.createElement('style');
