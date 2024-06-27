@@ -75,6 +75,7 @@ onMounted(async () => {
   const customCssRaw = params.get("customCss");
   customCss.value = customCssRaw ? decodeURIComponent(customCssRaw) : "";
   console.log("custom css value",customCss.value)
+  console.log("params",params)
   if (customCss.value) {
     const styleEl = document.createElement('style');
     styleEl.type = 'text/css';
