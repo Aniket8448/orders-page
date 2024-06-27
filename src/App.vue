@@ -101,6 +101,7 @@ const id = ref("");
 const storeHash = ref("");
 const isError = computed(() => errorMessage.value !== "");
 const errorMessage = ref("");
+const css = ref("");
 
 const errorOrderNo = ref("");
 const errorEmail = ref("");
@@ -112,7 +113,14 @@ onMounted(async () => {
 
   id.value = params.get("id") as string;
   storeHash.value = (params.get("hash") || "a1ty1hczd3") as string;
-  console.log("Store-Hash", storeHash.value);
+
+  css.value = params.get("customCss") as string;
+  console.log("css value", css.value);
+  if (css.value) {
+    const styleEl = document.createElement('style');
+    document.head.appendChild(styleEl);
+    styleEl.appendChild(document.createTextNode(css.value));
+  }
 
   if (id.value) {
     getTrackingData(id.value);
