@@ -72,23 +72,26 @@ onMounted(async () => {
   storeHash.value = params.get("hash") as string;
 
   // Decode the customCss parameter to handle any special characters
-  customCss.value = decodeURIComponent(params.get("customCss") as string);
-
+  const customCssRaw = params.get("customCss");
+  customCss.value = customCssRaw ? decodeURIComponent(customCssRaw) : "";
+  console.log("custom css value",customCss.value)
   if (customCss.value) {
     const styleEl = document.createElement('style');
+    styleEl.type = 'text/css';
+    styleEl.appendChild(document.createTextNode(customCss.value));
     document.head.appendChild(styleEl);
-    styleEl.textContent = customCss.value; // Safely append the CSS string
   }
 
   if (id.value) {
-    getTrackingData(id.value);
+    await getTrackingData(id.value);
   } else if (storeHash.value) {
-    const emailStatus: { emailValidationStatus: boolean } = await store.fetchEmailValidationStatus(params.get('hash'));
+    const emailStatus = await store.fetchEmailValidationStatus(storeHash.value);
     emailValidationStatus.value = emailStatus.emailValidationStatus;
   }
 
   setupMutationObserver();
 });
+
 
 
 // Example function to change query parameters
