@@ -73,7 +73,7 @@ onMounted(async () => {
 
   
   customCss.value = document.location.search.split('&customCss=')[1];
-  console.log("Decoded URI", decodeURIComponent(customCss.value));
+  console.log("Decoded URI", JSON.parse(decodeURIComponent(customCss.value)));
   if (customCss.value) {
     const styleEl = document.createElement('style');
     styleEl.type = 'text/css';
