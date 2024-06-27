@@ -81,7 +81,9 @@ onMounted(async () => {
   storeHash.value = params.get("hash") as string;
 
   // Decode the customCss parameter to handle any special characters
-  const customCssRaw = params.get("customCss");
+  const encodedCustomCss = urlParams.get('customCss');
+  const customCssDecoded = decodeURIComponent(encodedCustomCss);
+  console.log(`Value 1 ${encodedCustomCss} and value 2 is ${customCssDecoded}`);
   customCss.value = customCssRaw ? decodeURIComponent(customCssRaw) : "";
   console.log("custom css value",customCss.value)
   console.log("params",params)
