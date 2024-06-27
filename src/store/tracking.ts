@@ -20,13 +20,11 @@ export const useTrackingStore = defineStore('tracking', {
         async fetchTrackingData(orderId: string, storeHash: string, email?: string) {
             this.loading = true;
             try {
-                const response = await axios.get(`https://da38-103-61-252-156.ngrok-free.app/track/order-shipment`, {
-                    params: { orderId, email, storeHash },
-                    headers: { 'ngrok-skip-browser-warning': 'true','X-Frame-Options': 'ALLOW-FROM' }
+                const response = await axios.get(`https://api.bc.trackorder.app/track/order-shipment`, {
+                    params: { orderId, email, storeHash }
                 });
-                console.log(response);
+
                 this.setTrackingData(response.data);
-                console.log("Tracking-data", this.trackingData);
                 return response.data;
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response && error.response.status === 403) {
@@ -41,9 +39,8 @@ export const useTrackingStore = defineStore('tracking', {
         async fetchTrackingDataByID(trackingId: string, storeHash: string) {
             this.loading = true;
             try {
-                const response = await axios.get(`https://da38-103-61-252-156.ngrok-free.app/track/order-shipment-id`, {
+                const response = await axios.get(`https://api.bc.trackorder.app/track/order-shipment-id`, {
                     params: { trackingId, storeHash },
-                    headers: { 'ngrok-skip-browser-warning': 'true','X-Frame-Options': 'ALLOW-FROM' }
                 });
                 this.setTrackingData(response.data);
                 return response.data;
@@ -60,9 +57,8 @@ export const useTrackingStore = defineStore('tracking', {
         async fetchEmailValidationStatus(storeHash: string) {
             this.loading = true;
             try {
-                const response = await axios.get(`https://da38-103-61-252-156.ngrok-free.app/track/email-validation-status`, {
+                const response = await axios.get(`https://api.bc.trackorder.app/track/email-validation-status`, {
                     params: { storeHash },
-                    headers: { 'ngrok-skip-browser-warning': 'true','X-Frame-Options': 'ALLOW-FROM' }
                 });
                 return response.data;
             } catch (error) {
@@ -72,9 +68,8 @@ export const useTrackingStore = defineStore('tracking', {
             }
         },
         async fetchImagesByProductIds(storeHash: string, productIds: string) {
-            const response = await axios.get(`https://da38-103-61-252-156.ngrok-free.app/products/images`, {
+            const response = await axios.get(`https://api.bc.trackorder.app/products/images`, {
                 params: {storeHash, productIds},
-                headers: { 'ngrok-skip-browser-warning': 'true','X-Frame-Options': 'ALLOW-FROM' }
             });
 
             return response.data;

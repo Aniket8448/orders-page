@@ -1,107 +1,64 @@
 <template>
-<!--  <track-order-status></track-order-status>-->
   <!-- Section 1 -->
-  <div v-if="!id">
-    <section
-        TrackOrder
-        class="m-8 md:m-0">
-      <div class="max-w-lg mx-auto shadow-md p-8 mb-2 mt-6">
-        <h2 class="text-3xl text-center">Track Order</h2>
-        <form
-            class="mt-8"
-            @submit.prevent="trackOrder">
-          <div>
-            <label
-                for="ordernumber"
-                class="block text-sm font-medium leading-6 text-gray-900"
-            >Order No.
-            </label>
-            <div class="mt-2">
-              <input
-                  type="text"
-                  name="ordernumber"
-                  id="ordernumber"
-                  class="p-4 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  placeholder="343453432"
-                  v-model="orderNumber" required/>
+    <!-- Section 1: Order Tracking Form -->
+    <div v-if="!id">
+      <section class="track-order m-8 md:m-0">
+        <div class="max-w-lg mx-auto shadow-md p-8 mb-2 mt-6">
+          <h2 class="text-3xl text-center" id="to-head">Track Order</h2>
+          <form class="mt-8" @submit.prevent="trackOrder" id="to-button-text">
+            <div if="to-order">
+              <label for="ordernumber" class="block text-sm font-medium leading-6 text-gray-900">Order No.</label>
+              <div class="mt-2">
+                <input type="text" name="ordernumber" id="ordernumber" v-model="orderNumber"
+                       class="p-4 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                       placeholder="343453432" required/>
+              </div>
             </div>
-          </div>
-          <div
-              v-if="emailValidationStatus"
-              class="mt-4">
-            <label
-                for="email"
-                class="block text-sm font-medium leading-6 text-gray-900"
-            >Email
-            </label>
-            <div class="mt-2">
-              <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  class="p-4 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  placeholder="you@example.com"
-                  v-model="email" required/>
+            <div v-if="emailValidationStatus" class="mt-4" id="to-email">
+              <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+              <div class="mt-2">
+                <input type="email" name="email" id="email" v-model="email"
+                       class="p-4 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                       placeholder="you@example.com" required/>
+              </div>
             </div>
-          </div>
-          <input
-              type="submit"
-              class="cursor-pointer mt-8 rounded-md bg-indigo-600 px-3.5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              value="Track Order" />
-        </form>
-      </div>
-      <div class="max-w-lg mx-auto text-sm text-gray-600">
-        <a
-            target="_blank"
-            href=""
-        >Powered by
-          <img
-              src="/img/full-logo-track-order.png"
-              alt="logo"
-              class="ml-2 h-6 inline"
-          /></a>
-      </div>
-    </section>
-  </div>
-
-<!--  <div-->
-<!--      v-if="isError"-->
-<!--      class="mx-auto p-8 mb-4">-->
-<!--    <AppAlert-->
-<!--        v-if="isError"-->
-<!--        :variant="'danger'"-->
-<!--        :title="errorMessage"></AppAlert>-->
-<!--  </div>-->
-  <p v-if="store.wrongCreds" class="text-center text-red-500">Invalid details provided.</p>
-
-  <!-- Section 2 -->
-  <track-order-status
-      v-if="id"
-      :fulfillments="trackingData"
-      :storeHash="storeHash"
-      :isLoading="isDataLoading"></track-order-status>
+            <input type="submit" value="Track Order"
+                   id="to-button"
+                   class="cursor-pointer w-full mt-8 rounded-md bg-indigo-600 px-3.5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"/>
+          </form>
+          <p v-if="errorMessage" class="mt-4 text-center text-red-500">{{ errorMessage }}</p>
+          <p v-if="store.wrongCreds" class="text-center text-red-500">Invalid details provided.</p>
+        </div>
+      </section>
+    </div>
+    <!-- Section 2 -->
+    <div v-if="id">
+      <track-order-status
+          :fulfillments="trackingData"
+          :storeHash="storeHash"
+          :isLoading="isDataLoading"></track-order-status>
+    </div>
 </template>
 
 <script setup lang="ts">
 import TrackOrderStatus from "./components/track-order-status.vue";
-import { ref, computed, onMounted } from "vue";
+import {ref, computed, onMounted} from "vue";
 import {useTrackingStore} from './store/tracking';
 import {ITrackingData} from "@/Dto";
 
 
 const orderNumber = ref("");
 const email = ref("");
-// const helper = new AppHelper();
 const store = useTrackingStore();
 
 const trackingData = ref<ITrackingData[]>([] as unknown as ITrackingData[]);
 const isDataLoading = ref(false);
 
 const id = ref("");
+const customCss = ref("");
 const storeHash = ref("");
 const isError = computed(() => errorMessage.value !== "");
 const errorMessage = ref("");
-const css = ref("");
 
 const errorOrderNo = ref("");
 const errorEmail = ref("");
@@ -112,22 +69,21 @@ onMounted(async () => {
   const params = new URLSearchParams(document.location.search);
 
   id.value = params.get("id") as string;
-  storeHash.value = (params.get("hash") || "a1ty1hczd3") as string;
+  storeHash.value = (params.get("hash")) as string;
 
-  css.value = params.get("customCss") as string;
-  console.log("css value", css.value);
-  if (css.value) {
+  customCss.value = params.get("customCss") as string;
+
+  if (customCss.value) {
     const styleEl = document.createElement('style');
     document.head.appendChild(styleEl);
-    styleEl.appendChild(document.createTextNode(css.value));
+    styleEl.appendChild(document.createTextNode(customCss.value));
   }
 
   if (id.value) {
     getTrackingData(id.value);
   } else if (storeHash.value) {
-    const emailStatus: {emailValidationStatus: boolean} = await store.fetchEmailValidationStatus(params.get('hash') ?? 'a1ty1hczd3');
+    const emailStatus: { emailValidationStatus: boolean } = await store.fetchEmailValidationStatus(params.get('hash'));
     emailValidationStatus.value = emailStatus.emailValidationStatus;
-    console.log("Email-Validation-Status", emailValidationStatus.value);
   }
 
   setupMutationObserver();
@@ -140,35 +96,49 @@ const updateQueryParams = newParams => {
   document.location.search = "?" + params.toString();
 };
 
+// Updated trackOrder function with improved handling
 const trackOrder = async () => {
-  console.log("Hello!!");
   if (!validate()) return;
   isDataLoading.value = true;
-  console.log("Hello  track-order");
-  let res;
+
   try {
-    if (emailValidationStatus) {
+    let res;
+    if (emailValidationStatus.value) {
       res = await store.fetchTrackingData(orderNumber.value, storeHash.value, email.value);
     } else {
       res = await store.fetchTrackingData(orderNumber.value, storeHash.value);
     }
-    console.log("respose",res);
 
-    trackingData.value = res;
-    updateQueryParams({ id: trackingData.value[0]?.orderId});
-    errorMessage.value = "";
+    if (res && res.length > 0) {
+      trackingData.value = res;
+      if (res[0]?.orderId) {
+        updateQueryParams({id: res[0].orderId}); // Ensure the ID is valid if transitStatus is not NO_RECORD
+        id.value = res[0].orderId; // Update the component state if transitStatus is not NO_RECORD
+        errorMessage.value = "";
+      }
+      // } else if (res[0]?.trackingDetails?.transitStatus === "NO_RECORD") {
+      //   // Handle NO_RECORD status without changing the URL
+      //   console.log("errorMessage",store.$state.error)
+      //   errorMessage.value = "Tracking details not found";
+      // } else if (res[0]?.trackingDetails?.transitStatus === "INIT") {
+      //   // Handle NO_RECORD status without changing the URL
+      //   console.log("errorMessage",store.$state.error)
+      //   errorMessage.value = "Tracking details not found";
+      // }
+    }
   } catch (e) {
-    errorMessage.value = e?.response?.data?.message || "Error in fetching data.";
+    errorMessage.value = e?.message || "Error in fetching data.";
   } finally {
     isDataLoading.value = false;
   }
 };
 
+
 const getTrackingData = async (uid: string) => {
   isDataLoading.value = true;
   try {
     const res = await store.fetchTrackingDataByID(uid, storeHash.value);
-    trackingData.value = res;
+    trackingData.value = res.filter(x => x?.trackingDetails?.id);
   } catch (e) {
     errorMessage.value = e?.response?.data?.message || "Error in fetching data.";
   } finally {
@@ -204,6 +174,12 @@ const setupMutationObserver = () => {
     characterData: true,
   });
 };
+
+import {computed, onMounted, ref} from 'vue';
+
+onMounted(() => {
+  setupMutationObserver();
+})
 
 </script>
 
