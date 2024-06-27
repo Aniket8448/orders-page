@@ -71,9 +71,9 @@ onMounted(async () => {
   id.value = params.get("id") as string;
   storeHash.value = params.get("hash") as string;
 
-  console.log("Decoded URI", decodeURIComponent(customCss.value));
-
+  
   customCss.value = document.location.search.split('&customCss=')[1];
+  console.log("Decoded URI", decodeURIComponent(customCss.value));
   if (customCss.value) {
     const styleEl = document.createElement('style');
     styleEl.type = 'text/css';
