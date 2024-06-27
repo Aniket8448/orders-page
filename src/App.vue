@@ -69,14 +69,15 @@ onMounted(async () => {
   const params = new URLSearchParams(document.location.search);
 
   id.value = params.get("id") as string;
-  storeHash.value = (params.get("hash")) as string;
+  storeHash.value = params.get("hash") as string;
 
+  // Decode the customCss parameter to handle any special characters
   customCss.value = decodeURIComponent(params.get("customCss") as string);
 
   if (customCss.value) {
     const styleEl = document.createElement('style');
     document.head.appendChild(styleEl);
-    styleEl.appendChild(document.createTextNode(customCss.value));
+    styleEl.textContent = customCss.value; // Safely append the CSS string
   }
 
   if (id.value) {
@@ -88,6 +89,7 @@ onMounted(async () => {
 
   setupMutationObserver();
 });
+
 
 // Example function to change query parameters
 const updateQueryParams = newParams => {
