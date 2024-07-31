@@ -70,7 +70,7 @@ onMounted(async () => {
   console.log("i am from private repo");
   id.value = params.get("id") as string;
   storeHash.value = params.get("hash") as string;
-
+  console.log("params are",params)
   
   customCss.value = decodeURIComponent(document.location.search.split('&customCss=')[1]);
   if (customCss.value) {
