@@ -68,11 +68,8 @@ const emailValidationStatus = ref(true);
 onMounted(async () => {
   const params = new URLSearchParams(document.location.search);
   console.log("i am from private repo");
-  id.value = params.get("id") as string;
+  id.value = document.location.search.split('=')[1];
   storeHash.value = params.get("hash") as string;
-  console.log("params are",params)
-  console.log("store hash are",storeHash.value)
-  console.log("id is",id.value)
 
   customCss.value = decodeURIComponent(document.location.search.split('&customCss=')[1]);
   if (customCss.value) {
