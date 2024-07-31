@@ -90,8 +90,10 @@ onMounted(async () => {
   }
 
   if (id.value) {
+    console.log("fetch by id",id.value);
     await getTrackingData(id.value);
   } else if (storeHash.value) {
+    console.log("fetching through email validation api")
     const emailStatus = await store.fetchEmailValidationStatus(storeHash.value);
     emailValidationStatus.value = emailStatus.emailValidationStatus;
   }
