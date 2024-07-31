@@ -68,18 +68,17 @@ const emailValidationStatus = ref(true);
 onMounted(async () => {
   const params = new URLSearchParams(document.location.search);
   console.log("i am from private repo");
-
-  const queryParts = document.location.search.split('&');
-  id.value = queryParts[0].split('=')[1]; // Extract the value before the '&'
+  id.value = params.get("id") as string;
   storeHash.value = params.get("hash") as string;
 
-  const customCssPart = params.get("customCss");
-  customCss.value = customCssPart ? decodeURIComponent(customCssPart) : '';
+  console.log("params are",document.location.search)
 
+  customCss.value = decodeURIComponent(document.location.search.split('&customCss=')[1]);
   if (customCss.value) {
     try {
       console.log("custom css", customCss.value);
-      const parsedCss = JSON.parse(customCss.value);
+      const cssPart = customCss.value.split('&')[0];
+      const parsedCss = JSON.parse(cssPart);
       if (parsedCss && parsedCss.customCss) {
         const styleEl = document.createElement('style');
         styleEl.type = 'text/css';
@@ -87,21 +86,20 @@ onMounted(async () => {
         document.head.appendChild(styleEl);
       }
     } catch (error) {
-      console.error("Error parsing custom CSS", error);
+      console.error("Error parsing custom CSS");
     }
   }
 
   if (id.value) {
-    console.log("fetch by id", id.value);
+    console.log("fetch by id",id.value);
     await getTrackingData(id.value);
   } else if (storeHash.value) {
-    console.log("fetching through email validation api");
+    console.log("fetching through email validation api")
     const emailStatus = await store.fetchEmailValidationStatus(storeHash.value);
     emailValidationStatus.value = emailStatus.emailValidationStatus;
   }
 
   setupMutationObserver();
-
 });
 
 
