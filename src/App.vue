@@ -6,7 +6,7 @@
         <div class="max-w-lg mx-auto shadow-md p-8 mb-2 mt-6">
           <h2 class="text-3xl text-center" id="to-head">Track Order</h2>
           <form class="mt-8" @submit.prevent="trackOrder" id="to-button-text">
-            <div if="to-order">
+            <div id="to-order">
               <label for="ordernumber" class="block text-sm font-medium leading-6 text-gray-900">Order No.</label>
               <div class="mt-2">
                 <input type="text" name="ordernumber" id="ordernumber" v-model="orderNumber"
@@ -67,18 +67,26 @@ const emailValidationStatus = ref(true);
 
 onMounted(async () => {
   const params = new URLSearchParams(document.location.search);
-
+  console.log("i am from private repo");
   id.value = params.get("id") as string;
   storeHash.value = params.get("hash") as string;
 
   
-  customCss.value = document.location.search.split('&customCss=')[1];
-  console.log("Decoded URI", JSON.parse(decodeURIComponent(customCss.value)).customCss);
+  customCss.value = decodeURIComponent(document.location.search.split('&customCss=')[1]);
   if (customCss.value) {
-    const styleEl = document.createElement('style');
-    styleEl.type = 'text/css';
-    styleEl.appendChild(document.createTextNode(JSON.parse(decodeURIComponent(customCss.value)).customCss));
-    document.head.appendChild(styleEl);
+    try {
+      console.log("custom css", customCss.value);
+      const cssPart = customCss.value.split('&')[0];
+      const parsedCss = JSON.parse(cssPart);
+      if (parsedCss && parsedCss.customCss) {
+        const styleEl = document.createElement('style');
+        styleEl.type = 'text/css';
+        styleEl.appendChild(document.createTextNode(parsedCss.customCss));
+        document.head.appendChild(styleEl);
+      }
+    } catch (error) {
+      console.error("Error parsing custom CSS");
+    }
   }
 
   if (id.value) {
